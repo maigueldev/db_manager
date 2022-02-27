@@ -1,13 +1,60 @@
 import express from 'express';
 import cron from 'node-cron';
 import mysql from 'mysql';
+import fs from 'fs';
 
+import { stringify } from 'csv-stringify';
 const app = express();
 const PORT = 8080;
 
 app.get('/', (req: any, res: any) => res.send('Express + Typescript server!!!'));
 app.listen(PORT, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+});
+
+var someData = [
+    {
+        "Country": "Nigeria",
+        "Population": "200m",
+        "Continent": "Africa",
+        "Official Language(s)": "English"
+    },
+    {
+        "Country": "India",
+        "Population": "1b",
+        "Continent": "Asia",
+        "Official Language(s)": "Hindi, English"
+    },
+    {
+        "Country": "United States of America",
+        "Population": "328m",
+        "Continent": "North America",
+        "Official Language": "English"
+    },
+    {
+        "Country": "United Kingdom",
+        "Population": "66m",
+        "Continent": "Europe",
+        "Official Language": "English"
+    },
+    {
+        "Country": "Brazil",
+        "Population": "209m",
+        "Continent": "South America",
+        "Official Language": "Portugese"
+    }
+]
+
+stringify(someData, {
+    header: true
+}, function (err: any, output: any) {
+    fs.writeFile('./exports/csv/someData.csv', output, (err) => {
+        if (err)
+            console.log(err);
+        else {
+            console.log("File written successfully");
+        }
+    });
 });
 
 // Node-Cron
